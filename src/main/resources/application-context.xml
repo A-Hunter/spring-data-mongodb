@@ -5,7 +5,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <mongo:db-factory dbname="sandbox" mongo-ref="mongoClient"/>
+    <mongo:template db-factory-ref="mongoDbFactory"/>
+
+    <mongo:db-factory id="mongoDbFactory" dbname="sandbox" mongo-ref="mongoClient"/>
+
     <mongo:mongo-client id="mongoClient">
         <mongo:client-options/>
     </mongo:mongo-client>
