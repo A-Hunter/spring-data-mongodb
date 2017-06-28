@@ -6,12 +6,19 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * Created by Ghazi Naceur on 26/06/2017.
@@ -52,12 +59,25 @@ public class Application {
 
         // Saving documents - upsert behavior - inserting an entity not a collection
 //        MockBook book = new MockBook("id1", "A useful book 2", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>());
-        MongoOperations template = context.getBean(MongoTemplate.class);
+//        MongoOperations template = context.getBean(MongoTemplate.class);
 //        template.save(book);
-        BasicQuery query = new BasicQuery("{title:'A useful book 2'}");
-        MockBook book1 = template.find(query,MockBook.class).get(0);
-        book1.setTitle("the new title");
-        template.save(book1);
-        System.out.println(book1.toString());
+//        BasicQuery query = new BasicQuery("{title:'A useful book 2'}");
+//        MockBook book1 = template.find(query,MockBook.class).get(0);
+//        book1.setTitle("the new title");
+//        template.save(book1);
+//        System.out.println(book1.toString());
+
+        // Updating documents
+        MongoOperations template = context.getBean(MongoTemplate.class);
+        Query query = query(where("title").is("the new title"));
+        Update update = update("title","new value"); //new Update().set("title","new value");
+        template.updateFirst(query,update,MockBook.class);
+
+//        Query query1 = new Query(); // return all
+        template.save(new MockBook("id4", "the new title", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+        template.save(new MockBook("id5", "the new title", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+        template.save(new MockBook("id6", "the new title", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+        template.updateMulti(query,update,MockBook.class);
+
     }
 }
