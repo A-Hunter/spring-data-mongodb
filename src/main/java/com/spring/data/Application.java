@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -95,14 +96,22 @@ public class Application {
 //        template.remove(query, MockBook.class);
 
         // Retrieving documents
-        MongoOperations template = context.getBean(MongoTemplate.class);
-        MockBook book = new MockBook("id7", "A book", new Date(), 300,
-                new BigDecimal(8.500), new Author("per1","unknown","known",45,
-                "The 3rd street in the middle of nowhere city"), new ArrayList<>());
+//        MongoOperations template = context.getBean(MongoTemplate.class);
+//        MockBook book = new MockBook("id7", "A book", new Date(), 300,
+//                new BigDecimal(8.500), new Author("per1","unknown","known",45,
+//                "The 3rd street in the middle of nowhere city"), new ArrayList<>());
 //        template.save(book);
 //        MockBook b = template.findById(book.getBookId(), MockBook.class);
-        MockBook b = template.findOne(new Query(where("bookId").is(book.getBookId()).and("author.lastName").is("known")), MockBook.class);
-        System.out.println(b.toString());
+//        MockBook b = template.findOne(new Query(where("bookId").is(book.getBookId()).and("author.lastName").is("known")), MockBook.class);
+//        System.out.println(b.toString());
 
+        // Criteria and Query objects
+        MongoOperations template = context.getBean(MongoTemplate.class);
+
+//        Criteria criteria = Criteria.where("title").is("A book 9");
+        Criteria criteria = Criteria.where("title").regex(Pattern.compile(".*book.*"));
+        Query query = new Query(criteria).addCriteria(where("pageCount").gt(800));
+        List<MockBook> books = template.find(query, MockBook.class);
+        books.forEach(book -> System.out.println(book.toString()));
     }
 }
