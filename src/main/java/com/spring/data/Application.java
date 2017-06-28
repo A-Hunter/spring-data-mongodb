@@ -68,16 +68,23 @@ public class Application {
 //        System.out.println(book1.toString());
 
         // Updating documents
+//        MongoOperations template = context.getBean(MongoTemplate.class);
+//        Query query = query(where("title").is("the new title"));
+//        Update update = update("title","new value"); //new Update().set("title","new value");
+//        template.updateFirst(query,update,MockBook.class);
+
+//        //Query query1 = new Query(); // return all
+//        template.save(new MockBook("id4", "the new title", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+//        template.save(new MockBook("id5", "the new title", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+//        template.save(new MockBook("id6", "the new title", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+//        template.updateMulti(query,update,MockBook.class);
+
+        // Upserting documents
         MongoOperations template = context.getBean(MongoTemplate.class);
-        Query query = query(where("title").is("the new title"));
-        Update update = update("title","new value"); //new Update().set("title","new value");
-        template.updateFirst(query,update,MockBook.class);
-
-//        Query query1 = new Query(); // return all
-        template.save(new MockBook("id4", "the new title", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
-        template.save(new MockBook("id5", "the new title", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
-        template.save(new MockBook("id6", "the new title", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
-        template.updateMulti(query,update,MockBook.class);
-
+        Query query = new Query(where("title").is("a title !")
+                .and("author.firstName").is("Someone")
+                .and("author.lastName").is("human"));
+        Update update = update("pageCount",1000);
+        template.upsert(query,update,MockBook.class);
     }
 }
