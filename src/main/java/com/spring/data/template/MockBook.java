@@ -29,18 +29,20 @@ public class MockBook {
 
     private Author author;
 
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags = new ArrayList<>();
 
     public MockBook() {
         super();
     }
 
-    public MockBook(String bookId, String title, Date publishDate, int pageCount, BigDecimal price) {
+    public MockBook(String bookId, String title, Date publishDate, int pageCount, BigDecimal price, Author author, List<String> tags) {
         this.bookId = bookId;
         this.title = title;
         this.publishDate = publishDate;
         this.pageCount = pageCount;
         this.price = price;
+        this.author = author;
+        this.tags = tags;
     }
 
     public String getBookId() {
@@ -83,14 +85,32 @@ public class MockBook {
         this.price = price;
     }
 
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "MockBook{" +
-                "bookId=" + bookId +
+                "bookId='" + bookId + '\'' +
                 ", title='" + title + '\'' +
                 ", publishDate=" + publishDate +
                 ", pageCount=" + pageCount +
                 ", price=" + price +
+                ", author=" + author +
+                ", tags=" + tags +
                 '}';
     }
 }
