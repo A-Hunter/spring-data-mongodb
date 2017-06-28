@@ -3,12 +3,17 @@ package com.spring.data;
 import com.spring.data.configuration.Config;
 import com.spring.data.deserializer.LocationRepository;
 import com.spring.data.deserializer.PlaceCoordination;
+import com.spring.data.geospatial.features.FakeBook;
+import com.spring.data.geospatial.features.FakeBookRepository;
+import com.spring.data.geospatial.features.Library;
 import com.spring.data.repository.BookRepository;
 import com.spring.data.template.Author;
 import com.spring.data.template.MockBook;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -135,8 +140,18 @@ public class Application {
 //        rep.save(coor);
 
         // Mongo Repository Basics
-        BookRepository repo = context.getBean(BookRepository.class);
-        MockBook book = repo.findByTitle("A book 12");
-        System.out.println(book.toString());
+//        BookRepository repo = context.getBean(BookRepository.class);
+//        MockBook book = repo.findByTitle("A book 12");
+//        System.out.println(book.toString());
+
+        // Geospatial features
+        FakeBookRepository rep = context.getBean(FakeBookRepository.class);
+        Point point = new Point(20.5,60.80);
+        Distance distance = new Distance(10, Metrics.KILOMETERS);
+//        rep.save(new FakeBook("id1","book1",new Date(),100,
+//                new BigDecimal(10.000),new Author("per1","f1","l1",41,"add1"),
+//                new ArrayList<>(),new Library("lib1","libname1",new Point(20.5,60.80))));
+        List<FakeBook> books = rep.findByLocationCoordsNear(point, distance);
+        books.forEach(fakeBook -> System.out.println(fakeBook.toString()));
     }
 }
