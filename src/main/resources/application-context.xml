@@ -13,4 +13,6 @@
         <mongo:client-options/>
     </mongo:mongo-client>
 
+    <mongo:repositories base-package="com.spring.data"/>
+
 </beans>

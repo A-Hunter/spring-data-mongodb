@@ -1,6 +1,7 @@
 package com.spring.data;
 
 import com.spring.data.configuration.Config;
+import com.spring.data.repository.BookRepository;
 import com.spring.data.template.Author;
 import com.spring.data.template.MockBook;
 import org.springframework.context.ApplicationContext;
@@ -117,12 +118,19 @@ public class Application {
 //        books.forEach(book -> System.out.println(book.toString()));
 
         // Java Configuration
-        ApplicationContext contextWithJavaConfig = new AnnotationConfigApplicationContext(Config.class);
-        MongoOperations template = contextWithJavaConfig.getBean(MongoTemplate.class);
+//        ApplicationContext contextWithJavaConfig = new AnnotationConfigApplicationContext(Config.class);
+//        MongoOperations template = contextWithJavaConfig.getBean(MongoTemplate.class);
 //        Criteria criteria = Criteria.where("title").is("A book 9");
-        Criteria criteria = Criteria.where("title").regex(Pattern.compile(".*book.*"));
-        Query query = new Query(criteria).addCriteria(where("pageCount").gt(800));
-        List<MockBook> books = template.find(query, MockBook.class);
-        books.forEach(book -> System.out.println(book.toString()));
+//        Criteria criteria = Criteria.where("title").regex(Pattern.compile(".*book.*"));
+//        Query query = new Query(criteria).addCriteria(where("pageCount").gt(800));
+//        List<MockBook> books = template.find(query, MockBook.class);
+//        books.forEach(book -> System.out.println(book.toString()));
+
+        // Mongo Repositories
+        BookRepository repository = context.getBean(BookRepository.class);
+        MockBook book = new MockBook("id15", "A book 15", new Date(), 300,
+                new BigDecimal(15.500), new Author("per15","unknown","known",65,
+                "The 15th street in the middle of nowhere city"), new ArrayList<>());
+        repository.save(book);
     }
 }
