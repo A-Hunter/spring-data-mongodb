@@ -1,19 +1,24 @@
 package com.spring.data.template;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Ghazi Naceur on 27/06/2017.
  */
-
+@Document(collection = "mockbook")
 public class MockBook {
 
     @Id
     private String bookId;
 
+    @Field(value = "title")
     private String title;
 
     private Date publishDate;
@@ -21,6 +26,10 @@ public class MockBook {
     private int pageCount;
 
     private BigDecimal price;
+
+    private Author author;
+
+    private List<String> tags = new ArrayList<String>();
 
     public MockBook() {
         super();
