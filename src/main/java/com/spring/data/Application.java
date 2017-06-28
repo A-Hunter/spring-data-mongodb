@@ -5,6 +5,7 @@ import com.spring.data.template.MockBook;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -40,13 +41,23 @@ public class Application {
 //        // the org.springframework.data.@Annotations
 
         // Inserting documents
-        List<MockBook> books = new ArrayList<>();
-        books.add(new MockBook("id1", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
-        books.add(new MockBook("id2", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
-        books.add(new MockBook("id3", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
-        books.add(new MockBook("id4", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
-        books.add(new MockBook("id5", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+//        List<MockBook> books = new ArrayList<>();
+//        books.add(new MockBook("id1", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+//        books.add(new MockBook("id2", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+//        books.add(new MockBook("id3", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+//        books.add(new MockBook("id4", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+//        books.add(new MockBook("id5", "A useful book", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>()));
+//        MongoOperations template = context.getBean(MongoTemplate.class);
+//        template.insert(books, MockBook.class);
+
+        // Saving documents - upsert behavior - inserting an entity not a collection
+//        MockBook book = new MockBook("id1", "A useful book 2", new Date(), 300, new BigDecimal(8.500), new Author(), new ArrayList<>());
         MongoOperations template = context.getBean(MongoTemplate.class);
-        template.insert(books, MockBook.class);
+//        template.save(book);
+        BasicQuery query = new BasicQuery("{title:'A useful book 2'}");
+        MockBook book1 = template.find(query,MockBook.class).get(0);
+        book1.setTitle("the new title");
+        template.save(book1);
+        System.out.println(book1.toString());
     }
 }
