@@ -88,10 +88,21 @@ public class Application {
 //        template.upsert(query,update,MockBook.class);
 
         // Removing documents
+//        MongoOperations template = context.getBean(MongoTemplate.class);
+//        Query query = new Query(where("title").is("a title !")
+//                .and("author.firstName").is("Someone")
+//                .and("author.lastName").is("human"));
+//        template.remove(query, MockBook.class);
+
+        // Retrieving documents
         MongoOperations template = context.getBean(MongoTemplate.class);
-        Query query = new Query(where("title").is("a title !")
-                .and("author.firstName").is("Someone")
-                .and("author.lastName").is("human"));
-        template.remove(query, MockBook.class);
+        MockBook book = new MockBook("id7", "A book", new Date(), 300,
+                new BigDecimal(8.500), new Author("per1","unknown","known",45,
+                "The 3rd street in the middle of nowhere city"), new ArrayList<>());
+//        template.save(book);
+//        MockBook b = template.findById(book.getBookId(), MockBook.class);
+        MockBook b = template.findOne(new Query(where("bookId").is(book.getBookId()).and("author.lastName").is("known")), MockBook.class);
+        System.out.println(b.toString());
+
     }
 }
