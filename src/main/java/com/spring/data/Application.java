@@ -1,7 +1,10 @@
 package com.spring.data;
 
+import com.spring.data.configuration.Config;
 import com.spring.data.template.Author;
 import com.spring.data.template.MockBook;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -106,8 +109,16 @@ public class Application {
 //        System.out.println(b.toString());
 
         // Criteria and Query objects
-        MongoOperations template = context.getBean(MongoTemplate.class);
+//        MongoOperations template = context.getBean(MongoTemplate.class);
+//        Criteria criteria = Criteria.where("title").is("A book 9");
+//        Criteria criteria = Criteria.where("title").regex(Pattern.compile(".*book.*"));
+//        Query query = new Query(criteria).addCriteria(where("pageCount").gt(800));
+//        List<MockBook> books = template.find(query, MockBook.class);
+//        books.forEach(book -> System.out.println(book.toString()));
 
+        // Java Configuration
+        ApplicationContext contextWithJavaConfig = new AnnotationConfigApplicationContext(Config.class);
+        MongoOperations template = contextWithJavaConfig.getBean(MongoTemplate.class);
 //        Criteria criteria = Criteria.where("title").is("A book 9");
         Criteria criteria = Criteria.where("title").regex(Pattern.compile(".*book.*"));
         Query query = new Query(criteria).addCriteria(where("pageCount").gt(800));
