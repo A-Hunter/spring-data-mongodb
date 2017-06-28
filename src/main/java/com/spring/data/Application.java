@@ -1,12 +1,15 @@
 package com.spring.data;
 
 import com.spring.data.configuration.Config;
+import com.spring.data.deserializer.LocationRepository;
+import com.spring.data.deserializer.PlaceCoordination;
 import com.spring.data.repository.BookRepository;
 import com.spring.data.template.Author;
 import com.spring.data.template.MockBook;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -127,10 +130,12 @@ public class Application {
 //        books.forEach(book -> System.out.println(book.toString()));
 
         // Mongo Repositories
-        BookRepository repository = context.getBean(BookRepository.class);
-        MockBook book = new MockBook("id15", "A book 15", new Date(), 300,
-                new BigDecimal(15.500), new Author("per15","unknown","known",65,
-                "The 15th street in the middle of nowhere city"), new ArrayList<>());
-        repository.save(book);
+        LocationRepository rep = context.getBean(LocationRepository.class);
+//        MockBook book = new MockBook("id15", "A book 15", new Date(), 300,
+//                new BigDecimal(15.500), new Author("per15","unknown","known",65,
+//                "The 15th street in the middle of nowhere city"), new ArrayList<>());
+//        repository.save(book);
+        PlaceCoordination coor = new PlaceCoordination("id1",new Point(20.5,30.7));
+        rep.save(coor);
     }
 }
