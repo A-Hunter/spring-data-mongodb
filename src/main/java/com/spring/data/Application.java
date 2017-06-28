@@ -80,11 +80,18 @@ public class Application {
 //        template.updateMulti(query,update,MockBook.class);
 
         // Upserting documents
+//        MongoOperations template = context.getBean(MongoTemplate.class);
+//        Query query = new Query(where("title").is("a title !")
+//                .and("author.firstName").is("Someone")
+//                .and("author.lastName").is("human"));
+//        Update update = update("pageCount",1000);
+//        template.upsert(query,update,MockBook.class);
+
+        // Removing documents
         MongoOperations template = context.getBean(MongoTemplate.class);
         Query query = new Query(where("title").is("a title !")
                 .and("author.firstName").is("Someone")
                 .and("author.lastName").is("human"));
-        Update update = update("pageCount",1000);
-        template.upsert(query,update,MockBook.class);
+        template.remove(query, MockBook.class);
     }
 }
