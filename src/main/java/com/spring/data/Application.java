@@ -130,12 +130,13 @@ public class Application {
 //        books.forEach(book -> System.out.println(book.toString()));
 
         // Mongo Repositories
-        LocationRepository rep = context.getBean(LocationRepository.class);
-//        MockBook book = new MockBook("id15", "A book 15", new Date(), 300,
-//                new BigDecimal(15.500), new Author("per15","unknown","known",65,
-//                "The 15th street in the middle of nowhere city"), new ArrayList<>());
-//        repository.save(book);
-        PlaceCoordination coor = new PlaceCoordination("id1",new Point(20.5,30.7));
-        rep.save(coor);
+//        LocationRepository rep = context.getBean(LocationRepository.class);
+//        PlaceCoordination coor = new PlaceCoordination("id1",new Point(20.5,30.7));
+//        rep.save(coor);
+
+        // Mongo Repository Basics
+        BookRepository repo = context.getBean(BookRepository.class);
+        MockBook book = repo.findByTitle("A book 12");
+        System.out.println(book.toString());
     }
 }
