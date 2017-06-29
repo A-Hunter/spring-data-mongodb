@@ -178,8 +178,12 @@ public class Application {
 //                new ArrayList<>(),new Library("lib5","libname5",new Point(60.5,10.80)),
 //                "This is the description of the 5th book. It is simply useless."));
 //
-        TextCriteria criteria = TextCriteria.forDefaultLanguage().matching("provid");
-        List<DummyBook> books = rep.findAllByOrderByScoreDesc(criteria);
-        books.forEach(b -> System.out.println(b));
+//        TextCriteria criteria = TextCriteria.forDefaultLanguage().matching("provid");
+//        List<DummyBook> books = rep.findAllByOrderByScoreDesc(criteria);
+//        books.forEach(b -> System.out.println(b));
+
+        // JSON queries
+        List<DummyBook> books = rep.findLargeBooks(300);
+        books.forEach(b-> System.out.println(b));
     }
 }
