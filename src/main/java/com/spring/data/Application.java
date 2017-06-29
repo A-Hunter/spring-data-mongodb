@@ -3,6 +3,8 @@ package com.spring.data;
 import com.spring.data.configuration.Config;
 import com.spring.data.deserializer.LocationRepository;
 import com.spring.data.deserializer.PlaceCoordination;
+import com.spring.data.fulltext.search.DummyBook;
+import com.spring.data.fulltext.search.DummyBookRepository;
 import com.spring.data.geospatial.features.FakeBook;
 import com.spring.data.geospatial.features.FakeBookRepository;
 import com.spring.data.geospatial.features.Library;
@@ -17,10 +19,7 @@ import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.BasicQuery;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.core.query.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -145,13 +144,42 @@ public class Application {
 //        System.out.println(book.toString());
 
         // Geospatial features
-        FakeBookRepository rep = context.getBean(FakeBookRepository.class);
-        Point point = new Point(20.5,60.80);
-        Distance distance = new Distance(10, Metrics.KILOMETERS);
+//        FakeBookRepository rep = context.getBean(FakeBookRepository.class);
+//        Point point = new Point(20.5,60.80);
+//        Distance distance = new Distance(10, Metrics.KILOMETERS);
 //        rep.save(new FakeBook("id1","book1",new Date(),100,
 //                new BigDecimal(10.000),new Author("per1","f1","l1",41,"add1"),
 //                new ArrayList<>(),new Library("lib1","libname1",new Point(20.5,60.80))));
-        List<FakeBook> books = rep.findByLocationCoordsNear(point, distance);
-        books.forEach(fakeBook -> System.out.println(fakeBook.toString()));
+//        List<FakeBook> books = rep.findByLocationCoordsNear(point, distance);
+//        books.forEach(fakeBook -> System.out.println(fakeBook.toString()));
+
+        // Full text search
+        DummyBookRepository rep = context.getBean(DummyBookRepository.class);
+//        rep.save(new DummyBook("id1","book1",new Date(),100,
+//                new BigDecimal(10.000),new Author("per1","f1","l1",41,"add1"),
+//                new ArrayList<>(),new Library("lib1","libname1",new Point(20.5,60.80)),
+//                "This is the description of the 1st book. You will find here some unnecessary, useless information." +
+//                        "This description is used to test the full text search feature provided by MongoDB."));
+//        rep.save(new DummyBook("id2","book2",new Date(),200,
+//                new BigDecimal(20.000),new Author("per2","f2","l2",42,"add2"),
+//                new ArrayList<>(),new Library("lib2","libname2",new Point(30.5,70.80)),
+//                "This is the description of the 2nd book. It provides some ambiguous information about the book." +
+//                        "We actually don't see any purpose from this additional field. Well! It will help when exploring the full text search feature."));
+//        rep.save(new DummyBook("id3","book3",new Date(),300,
+//                new BigDecimal(30.000),new Author("per3","f3","l3",43,"add3"),
+//                new ArrayList<>(),new Library("lib3","libname3",new Point(40.5,80.80)),
+//                "This is the description of the 3rd book. It provides some summary about this great that no one knows anything about. "));
+//        rep.save(new DummyBook("id4","book4",new Date(),400,
+//                new BigDecimal(40.000),new Author("per4","f4","l4",44,"add4"),
+//                new ArrayList<>(),new Library("lib1","libname1",new Point(50.5,90.80)),
+//                "This is the description of the 4th book. It shows how much the author needs to go to sleep and probably how much he needs to think about writing again."));
+//        rep.save(new DummyBook("id5","book5",new Date(),500,
+//                new BigDecimal(50.000),new Author("per5","f5","l5",45,"add5"),
+//                new ArrayList<>(),new Library("lib5","libname5",new Point(60.5,10.80)),
+//                "This is the description of the 5th book. It is simply useless."));
+//
+        TextCriteria criteria = TextCriteria.forDefaultLanguage().matching("provid");
+        List<DummyBook> books = rep.findAllByOrderByScoreDesc(criteria);
+        books.forEach(b -> System.out.println(b));
     }
 }
